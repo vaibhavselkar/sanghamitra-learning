@@ -48,6 +48,97 @@
             <h1><strong>Personal Dashboard</strong> <span id="userName"></span></h1>
             <p><strong>Email:</strong> <span id="userEmail"></span></p>
         </div>
+        <section class="container mt-5">
+          <div class="row">
+              <div class="col-lg-12 mx-auto" data-aos="fade-up">
+                  <div class="card shadow-sm mb-4 bg-light">
+                      <div class="card-header bg-primary text-white">
+                          <h2 class="mb-0">Student Dashboard</h2>
+                      </div>
+                      <div class="card-body">
+                          <div class="row">
+                              <div class="col-md-4 mb-4">
+                                  <div id="student-profile" class="card bg-info text-white">
+                                      <div class="card-body">
+                                          <h3>Profile</h3>
+                                          <p><strong>Name:</strong> Tommy</p>
+                                          <p><strong>Average Score:</strong> 45.5</p>
+                                          <p><strong>Recent Activity:</strong> Diagnostic Math (5-7), Score: 2.5, Date: 2024-04-23</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-4 mb-4">
+                                  <div id="subject-breakdown" class="card bg-success text-white">
+                                      <div class="card-body">
+                                          <h3>Subject Breakdown</h3>
+                                          <p>Math: Average Score: 50.5</p>
+                                          <p>English: Average Score: 70.2</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-4 mb-4">
+                                  <div id="progress-tracking" class="card bg-warning text-white">
+                                      <div class="card-body">
+                                          <h3>Progress Tracking</h3>
+                                          <p>Test taken on 2024-04-23: Diagnostic Math (5-7), Score: 2.5, Time Taken: 63 mins</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-4 mb-4">
+                                  <div id="score-overview" class="card bg-secondary text-white">
+                                      <div class="card-body">
+                                          <h3>Score Overview</h3>
+                                          <select id="test-select" class="form-control mb-3">
+                                              <option value="diagnostic-math(5-7)">Diagnostic Math (5-7)</option>
+                                              <option value="diagnostic-eng(8-10)">Diagnostic English (8-10)</option>
+                                              <!-- Add more options as needed -->
+                                          </select>
+                                          <canvas id="scoreChart" width="200" height="150"></canvas>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-4 mb-4">
+                                  <div id="comparative-analysis" class="card bg-danger text-white">
+                                      <div class="card-body">
+                                          <h3>Comparative Analysis</h3>
+                                          <p>Your rank in class: 5/30</p>
+                                          <p>Class average score: 55</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-4 mb-4">
+                                  <div id="achievements-milestones" class="card bg-primary text-white">
+                                      <div class="card-body">
+                                          <h3>Achievements and Milestones</h3>
+                                          <p>Badge: Top Scorer in Diagnostic English</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-4 mb-4">
+                                  <div id="performance-insights" class="card bg-dark text-white">
+                                      <div class="card-body">
+                                          <h3>Performance Insights</h3>
+                                          <p>Strengths: Diagnostic English</p>
+                                          <p>Weaknesses: Diagnostic Math</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-4 mb-4">
+                                  <!-- Placeholder for future content or adjustments -->
+                              </div>
+                              <div class="col-md-4 mb-4">
+                                  <!-- Placeholder for future content or adjustments -->
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
 
     </div>
 
@@ -108,7 +199,7 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    location.replace('user_login.html');
                 }
 
                 const userData = await response.json();
