@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 // Successfully logged out
                                 // Redirect to index page and prevent going back
                                 location.replace('index.html');
+                                window.location.reload(true);
                             } else {
                                 console.error('Logout failed');
                             }
