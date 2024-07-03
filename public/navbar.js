@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 authButton.onclick = async (event) => {
                     event.preventDefault();
                     console.log("Logout button clicked");
-                    const confirmLogout = window.confirm("Do you really want to logout?");
+                    const confirmLogout = window.confirm("You are going to logout?");
                     if (confirmLogout) {
                         try {
                             const response = await fetch('https://sanghamitra-learning-backend.vercel.app/logout', {
