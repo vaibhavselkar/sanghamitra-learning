@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 authButton.onclick = async (event) => {
                     event.preventDefault();
                     console.log("Logout button clicked");
-                    const confirmLogout = window.confirm("You are going to logout?");
+                    const confirmLogout = window.confirm("Do you really want to logout?");
                     if (confirmLogout) {
                         try {
                             const response = await fetch('https://sanghamitra-learning-backend.vercel.app/logout', {
@@ -38,9 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             });
                             if (response.ok) {
                                 console.log("Logout successful");
-                                // Successfully logged out
                                 // Redirect to index page and prevent going back
-                                window.location.href = 'index.html';
+                                location.replace('index.html');
+                                setTimeout(checkAuthAgain, 1000); // Ensure check-auth runs after some time
                             } else {
                                 console.error('Logout failed');
                             }
@@ -63,6 +63,40 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
         .catch(error => console.error('Error checking authentication:', error));
+    }
+
+    // Function to check authentication again after attempting to log out
+    async function checkAuthAgain() {
+        try {
+            const response = await fetch('https://sanghamitra-learning-backend.vercel.app/check-auth', {
+                method: 'GET',
+                credentials: 'include'
+            });
+            const data = await response.json();
+            if (data.authenticated) {
+                // User is still logged in, try to log out again
+                console.log("Retrying logout...");
+                try {
+                    const response = await fetch('https://sanghamitra-learning-backend.vercel.app/logout', {
+                        method: 'GET',
+                        credentials: 'include'
+                    });
+                    if (response.ok) {
+                        console.log("Logout successful on retry");
+                        // Redirect to index page and prevent going back
+                        location.replace('index.html');
+                    } else {
+                        console.error('Logout failed on retry');
+                    }
+                } catch (error) {
+                    console.error('Error during logout on retry:', error);
+                }
+            } else {
+                console.log("User successfully logged out");
+            }
+        } catch (error) {
+            console.error('Error checking authentication again:', error);
+        }
     }
 
     loadNavbar();
