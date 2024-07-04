@@ -38,8 +38,31 @@ document.addEventListener('DOMContentLoaded', () => {
                             });
                             if (response.ok) {
                                 console.log("Logout successful");
+                                // Manually clear the cookie
                                 document.cookie = 'jwtoken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; Secure';
+                                
+                                // Redirect to index page
                                 location.replace('index.html');
+
+                                // Check auth status again to confirm
+                                setTimeout(() => {
+                                    fetch('https://sanghamitra-learning-backend.vercel.app/check-auth', {
+                                        method: 'GET',
+                                        credentials: 'include'
+                                    })
+                                    .then(checkResponse => checkResponse.json())
+                                    .then(checkData => {
+                                        if (!checkData.authenticated) {
+                                            console.log("User successfully logged out");
+                                        } else {
+                                            console.log("User still authenticated, retrying logout...");
+                                            fetch('https://sanghamitra-learning-backend.vercel.app/logout', {
+                                                method: 'GET',
+                                                credentials: 'include'
+                                            });
+                                        }
+                                    });
+                                }, 1000);
                             } else {
                                 console.error('Logout failed');
                             }
@@ -48,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     } else {
                         console.log("Logout cancelled");
-                    } 
+                    }
                 };
             } else {
                 // User is not logged in, show Login button
