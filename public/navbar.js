@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 console.log("Logout successful");
                                 // Redirect to index page and prevent going back
                                 location.replace('index.html');
+                                document.cookie = 'jwtoken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=None; Secure';
                                 setTimeout(checkAuthAgain, 1000); // Ensure check-auth runs after some time
                             } else {
                                 console.error('Logout failed');
