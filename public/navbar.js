@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             });
                             if (response.ok) {
                                 console.log("Logout successful");
-                                document.cookie = 'jwtoken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; Secure';
+                                document.cookie = 'jwtoken=; Domain=sanghamitra-learning.vercel.app; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; Secure';
                                 location.replace('index.html');
                             } else {
                                 console.error('Logout failed');
