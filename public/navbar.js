@@ -1,11 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
     function loadNavbar() {
         fetch('navbar.html')
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to load navbar: ${response.status} ${response.statusText}`);
+                }
+                return response.text();
+            })
             .then(data => {
                 document.getElementById('navbar-placeholder').innerHTML = data;
-                checkAuth();
-                console.log("Navbar loaded and checking auth");
+                checkAuth(); // After loading navbar, check authentication status
+                console.log("Navbar loaded and authentication checked");
             })
             .catch(error => console.error('Error loading navbar:', error));
     }
@@ -15,7 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
             method: 'GET',
             credentials: 'include'
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to check authentication: ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+        })
         .then(data => {
             const authButton = document.getElementById('authButton');
             if (data.authenticated) {
@@ -29,20 +39,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     const confirmLogout = window.confirm("Do you really want to logout?");
                     if (confirmLogout) {
                         try {
-                        const response = await fetch('https://sanghamitra-learning-backend.vercel.app/logout', {
-                            method: 'GET',
-                            credentials: 'include'
-                        });
-                    
-                        if (response.ok) {
-                            console.log("Logout successful");
-                            document.cookie = 'jwtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-                            location.replace('index.html');
-                        } else {
-                            console.error('Logout failed');
+                            const response = await fetch('https://sanghamitra-learning-backend.vercel.app/logout', {
+                                method: 'GET',
+                                credentials: 'include'
+                            });
+                        
+                            if (response.ok) {
+                                console.log("Logout successful");
+                                document.cookie = 'jwtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                                location.replace('index.html');
+                            } else {
+                                console.error('Logout failed');
+                            }
+                        } catch (error) {
+                            console.error('Error during logout:', error);
                         }
-                    } catch (error) {
-                        console.error('Error during logout:', error);
                     } else {
                         console.log("Logout cancelled");
                     } 
@@ -60,5 +71,5 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error checking authentication:', error));
     }
 
-    loadNavbar();
+    loadNavbar(); // Initial load of navbar and authentication status
 });
