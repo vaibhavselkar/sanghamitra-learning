@@ -7,16 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 checkAuth();
                 console.log("Navbar loaded and checking auth");
             })
-            .catch(error => {
-                console.error('Error loading navbar:', error);
-                showError('Error loading navbar');
-            });
-    }
-
-    function showError(message) {
-        const errorContainer = document.getElementById('error-container');
-        errorContainer.textContent = message;
-        errorContainer.style.display = 'block';
+            .catch(error => console.error('Error loading navbar:', error));
     }
 
     function checkAuth() {
@@ -46,13 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                 console.log("Logout successful");
                                 location.replace('index.html');
                             } else {
-                                const errorData = await response.json();
-                                console.error('Logout failed:', errorData.message);
-                                showError('Logout failed: ' + errorData.message);
+                                console.error('Logout failed');
                             }
                         } catch (error) {
                             console.error('Error during logout:', error);
-                            showError('Error during logout: ' + error.message);
                         }
                     } else {
                         console.log("Logout cancelled");
@@ -68,10 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
         })
-        .catch(error => {
-            console.error('Error checking authentication:', error);
-            showError('Error checking authentication: ' + error.message);
-        });
+        .catch(error => console.error('Error checking authentication:', error));
     }
 
     loadNavbar();
