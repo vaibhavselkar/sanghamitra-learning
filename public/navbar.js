@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Function to load the navbar HTML
     function loadNavbar() {
         fetch('navbar.html')
             .then(response => response.text())
@@ -8,10 +7,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 checkAuth();
                 console.log("Navbar loaded and checking auth");
             })
-            .catch(error => console.error('Error loading navbar:', error));
+            .catch(error => {
+                console.error('Error loading navbar:', error);
+                showError('Error loading navbar');
+            });
     }
 
-    // Function to check authentication and update the navbar
+    function showError(message) {
+        const errorContainer = document.getElementById('error-container');
+        errorContainer.textContent = message;
+        errorContainer.style.display = 'block';
+    }
+
     function checkAuth() {
         fetch('https://sanghamitra-learning-backend.vercel.app/check-auth', {
             method: 'GET',
@@ -21,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             const authButton = document.getElementById('authButton');
             if (data.authenticated) {
-                // User is logged in, show Logout button
                 console.log("User is authenticated");
                 authButton.textContent = 'Logout';
                 authButton.classList.remove('btn-success');
@@ -38,21 +44,21 @@ document.addEventListener('DOMContentLoaded', () => {
                             });
                             if (response.ok) {
                                 console.log("Logout successful");
-                                // Successfully logged out
-                                // Redirect to index page and prevent going back
                                 location.replace('index.html');
                             } else {
-                                console.error('Logout failed');
+                                const errorData = await response.json();
+                                console.error('Logout failed:', errorData.message);
+                                showError('Logout failed: ' + errorData.message);
                             }
                         } catch (error) {
                             console.error('Error during logout:', error);
+                            showError('Error during logout: ' + error.message);
                         }
                     } else {
                         console.log("Logout cancelled");
                     } 
                 };
             } else {
-                // User is not logged in, show Login button
                 console.log("User is not authenticated");
                 authButton.textContent = 'Login';
                 authButton.classList.remove('btn-danger');
@@ -62,7 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
         })
-        .catch(error => console.error('Error checking authentication:', error));
+        .catch(error => {
+            console.error('Error checking authentication:', error);
+            showError('Error checking authentication: ' + error.message);
+        });
     }
 
     loadNavbar();
