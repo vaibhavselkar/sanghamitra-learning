@@ -37,20 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch('https://sanghamitra-learning-backend.vercel.app/api/vocab-questions');
             const data = await response.json();
-            questions = data.map(item => ({
-                questionType: item.questionType,
-                question: item.question,
-                options: item.options,
-                correctOption: item.correctOption,
-                explanation: item.explanation,
-                synonyms: item.synonyms,
-                antonyms: item.antonyms,
-                phonetic: item.phonetic,
-                difficultyLevel: item.difficultyLevel,
-                CEFRLevel: item.CEFRLevel,
-                topic: item.topic,
-                points: item.points
-            }));
+            // Randomly select 20 questions
+            questions = data.sort(() => 0.5 - Math.random()).slice(0, 20);
             answers = new Array(questions.length).fill(null); // Initialize answers array
             startQuiz();
         } catch (error) {
