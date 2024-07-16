@@ -1,10 +1,12 @@
 body {
     font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     margin: 0;
+    padding: 0;
+}
+
+.header, .main, .footer {
+    display: block;
+    width: 100%;
 }
 
 .page {
@@ -20,8 +22,8 @@ body {
     border: 1px solid #ccc;
     border-radius: 10px;
     padding: 20px;
-    max-width: 400px;
-    margin: auto;
+    max-width: 800px;
+    margin: 20px auto;
     background-color: #f9f9f9;
 }
 
