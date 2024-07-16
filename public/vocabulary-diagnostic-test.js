@@ -31,6 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let quizRunning = false;
     let answers = []; // To store user answers and feedback
     let cefrScores = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 }; // To track scores by CEFR level
+    let correctAnswers = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 }; // Correct answers by CEFR level
+    let totalQuestions = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 }; // Total questions by CEFR level
     
     async function fetchQuestions() {
         console.log('Fetching questions...');
@@ -60,6 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
         totalPoints = 0;
         answers = new Array(questions.length).fill(null); // Reset answers array
         cefrScores = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 }; // Reset CEFR scores
+        correctAnswers = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 }; // Reset correct answers
+        totalQuestions = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 }; // Reset total questions
         quizRunning = true;
         showQuestion();
     }
@@ -75,30 +79,17 @@ document.addEventListener('DOMContentLoaded', () => {
         questionElement.textContent = question.question;
         optionButtons.forEach(button => {
             button.textContent = question.options[button.getAttribute('data-option')];
-            button.classList.remove('correct', 'incorrect', 'selected'); // Reset styles
+            button.classList.remove('selected');
         });
         feedbackSection.classList.add('hidden'); // Hide feedback section initially
-        explanationElement.textContent = ''; // Clear previous explanation
-        synonymsElement.textContent = ''; // Clear previous synonyms
-        antonymsElement.textContent = ''; // Clear previous antonyms
-        phoneticElement.textContent = ''; // Clear previous phonetic
-        pointsElement.textContent = ''; // Clear previous points
-        cefrElement.textContent = ''; // Clear previous CEFR
         nextButton.classList.add('hidden'); // Hide next button initially
         endButton.classList.add('hidden'); // Hide end button initially
 
         // Restore the previously selected option, if any
         const savedAnswer = answers[currentQuestionIndex];
         if (savedAnswer) {
-            const selectedOption = optionButtons[savedAnswer.selectedOptionIndex];
+            const selectedOption = optionButtons[savedAnswer.selectedOption];
             selectedOption.classList.add('selected');
-            if (savedAnswer.correct) {
-                selectedOption.classList.add('correct');
-            } else {
-                selectedOption.classList.add('incorrect');
-                const correctButton = document.querySelector(`.option[data-option="${question.correctOption}"]`);
-                correctButton.classList.add('correct');
-            }
         }
 
         // Show or hide the "Previous" button
@@ -120,27 +111,23 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function recordAnswer(option) {
         const question = questions[currentQuestionIndex];
-        const correctOption = question.correctOption;
-        const selectedAnswer = option.getAttribute('data-option') === correctOption;
-        optionButtons.forEach(button => {
-            button.classList.remove('selected');
-        });
+        const selectedOption = option.getAttribute('data-option');
+        const selectedAnswer = selectedOption === question.correctOption;
+
+        optionButtons.forEach(button => button.classList.remove('selected'));
         option.classList.add('selected');
+
         if (selectedAnswer) {
-            option.classList.add('correct');
-            totalPoints += question.points; // Add points for correct answer
-            cefrScores[question.CEFRLevel] += question.points; // Add points to CEFR level score
-        } else {
-            option.classList.add('incorrect');
-            const correctButton = document.querySelector(`.option[data-option="${correctOption}"]`);
-            correctButton.classList.add('correct');
+            correctAnswers[question.CEFRLevel]++;
         }
+
+        totalQuestions[question.CEFRLevel]++;
+
         // Store the answer and feedback
         answers[currentQuestionIndex] = {
             question: question.question,
-            selectedOption: option.textContent,
-            selectedOptionIndex: [...optionButtons].indexOf(option), // Save the index of the selected option
-            correctOption: question.options[correctOption],
+            selectedOption,
+            correctOption: question.correctOption,
             explanation: question.explanation,
             synonyms: question.synonyms,
             antonyms: question.antonyms,
@@ -155,8 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let maxScore = 0;
         let vocabularyLevel = 'A1';
         for (let level in cefrScores) {
-            if (cefrScores[level] > maxScore) {
-                maxScore = cefrScores[level];
+            const score = correctAnswers[level] / (totalQuestions[level] || 1);
+            if (score > maxScore) {
+                maxScore = score;
                 vocabularyLevel = level;
             }
         }
@@ -170,7 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 answers[i] = {
                     question: questions[i].question,
                     selectedOption: "You did not answer this question.",
-                    selectedOptionIndex: -1,
                     correctOption: questions[i].options[questions[i].correctOption],
                     explanation: questions[i].explanation,
                     synonyms: questions[i].synonyms,
