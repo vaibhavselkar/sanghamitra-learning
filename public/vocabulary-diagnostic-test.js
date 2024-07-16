@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <p>Your answer: ${answer.selectedOption}</p>
                 <p>Correct answer: ${answer.correctOption}</p>
-                <button class="expand-button">Expand</button>
+                <button class="expand-button">Explanation</button>
                 <div class="expandable hidden">
                     <p>Explanation: ${answer.explanation}</p>
                     <p>Synonyms: ${answer.synonyms.join(', ')}</p>
