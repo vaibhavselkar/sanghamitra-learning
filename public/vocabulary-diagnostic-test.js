@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Restore the previously selected option, if any
         const savedAnswer = answers[currentQuestionIndex];
         if (savedAnswer) {
-            const selectedOption = optionButtons[savedAnswer.selectedOption];
+            const selectedOption = optionButtons[savedAnswer.selectedOptionIndex];
             selectedOption.classList.add('selected');
         }
 
@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (selectedAnswer) {
             correctAnswers[question.CEFRLevel]++;
+            totalPoints += question.points; // Add points for correct answer
         }
 
         totalQuestions[question.CEFRLevel]++;
@@ -126,7 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Store the answer and feedback
         answers[currentQuestionIndex] = {
             question: question.question,
-            selectedOption,
+            selectedOption: selectedOption,
+            selectedOptionIndex: [...optionButtons].indexOf(option), // Save the index of the selected option
             correctOption: question.correctOption,
             explanation: question.explanation,
             synonyms: question.synonyms,
@@ -158,7 +160,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 answers[i] = {
                     question: questions[i].question,
                     selectedOption: "You did not answer this question.",
-                    correctOption: questions[i].options[questions[i].correctOption],
+                    selectedOptionIndex: -1,
+                    correctOption: questions[i].correctOption,
                     explanation: questions[i].explanation,
                     synonyms: questions[i].synonyms,
                     antonyms: questions[i].antonyms,
