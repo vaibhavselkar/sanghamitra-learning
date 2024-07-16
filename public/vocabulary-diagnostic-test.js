@@ -251,6 +251,8 @@ document.addEventListener('DOMContentLoaded', () => {
             assessments: [assessment]
         };
 
+        console.log("Sending data to server:", data);
+
         try {
             const response = await fetch('https://sanghamitra-learning-backend.vercel.app/api/vocabscores', {
                 method: 'POST',
@@ -259,6 +261,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify(data)
             });
+
+            const responseData = await response.json();
+            console.log("Server response:", responseData);
 
             if (response.ok) {
                 console.log('Results successfully sent to the server.');
