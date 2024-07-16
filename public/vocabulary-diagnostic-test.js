@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            const response = await fetch('https://sanghamitra-learning-backend.vercel.app/api/vocabscore', {
+            const response = await fetch('https://sanghamitra-learning-backend.vercel.app/api/vocabscores', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
