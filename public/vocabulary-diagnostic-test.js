@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let cefrScores = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 }; // To track scores by CEFR level
     let correctAnswers = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 }; // Correct answers by CEFR level
     let totalQuestions = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 }; // Total questions by CEFR level
+    let username = '';
+    let email = '';
     
     async function fetchQuestions() {
         console.log('Fetching questions...');
@@ -126,16 +128,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Store the answer and feedback
         answers[currentQuestionIndex] = {
-            question: question.question,
-            selectedOption: selectedOption,
+            question_id: question.id,
+            question_text: question.question,
+            user_response: selectedOption,
             selectedOptionIndex: [...optionButtons].indexOf(option), // Save the index of the selected option
-            correctOption: question.correctOption,
+            correct_option: question.correctOption,
             explanation: question.explanation,
             synonyms: question.synonyms,
             antonyms: question.antonyms,
             phonetic: question.phonetic,
-            points: question.points,
-            cefr: question.CEFRLevel,
+            points_awarded: selectedAnswer ? question.points : 0,
+            difficulty_level: question.difficulty_level,
+            CEFR_level: question.CEFRLevel,
+            topic: question.topic,
             correct: selectedAnswer
         };
     }
@@ -158,16 +163,19 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < questions.length; i++) {
             if (answers[i] === null) {
                 answers[i] = {
-                    question: questions[i].question,
-                    selectedOption: "You did not answer this question.",
+                    question_id: questions[i].id,
+                    question_text: questions[i].question,
+                    user_response: "You did not answer this question.",
                     selectedOptionIndex: -1,
-                    correctOption: questions[i].correctOption,
+                    correct_option: questions[i].correctOption,
                     explanation: questions[i].explanation,
                     synonyms: questions[i].synonyms,
                     antonyms: questions[i].antonyms,
                     phonetic: questions[i].phonetic,
-                    points: questions[i].points,
-                    cefr: questions[i].CEFRLevel,
+                    points_awarded: 0,
+                    difficulty_level: questions[i].difficulty_level,
+                    CEFR_level: questions[i].CEFRLevel,
+                    topic: questions[i].topic,
                     correct: false
                 };
             }
@@ -181,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         displayVocabularyLevel();
         quizRunning = false; // Reset state when quiz ends
         console.log('Quiz ended. Total points:', totalPoints);
+        sendResultsToServer();
     }
 
     function displayComprehensiveAnalysis() {
@@ -192,19 +201,19 @@ document.addEventListener('DOMContentLoaded', () => {
             answerDiv.classList.add(answer.correct ? 'correct-answer' : 'incorrect-answer');
             answerDiv.innerHTML = `
                 <div class="question-header">
-                    <span class="${answer.correct ? 'correct-icon' : answer.selectedOption === "You did not answer this question." ? 'skipped-icon' : 'incorrect-icon'}"></span>
+                    <span class="${answer.correct ? 'correct-icon' : answer.user_response === "You did not answer this question." ? 'skipped-icon' : 'incorrect-icon'}"></span>
                     <p>Question ${index + 1}: ${question.question}</p>
                 </div>
-                <p>Your answer: ${answer.selectedOption}</p>
-                <p>Correct answer: ${answer.correctOption}</p>
-                <button class="expand-button">Explanation</button>
+                <p>Your answer: ${answer.user_response}</p>
+                <p>Correct answer: ${answer.correct_option}</p>
+                <button class="expand-button">Expand</button>
                 <div class="expandable hidden">
                     <p>Explanation: ${answer.explanation}</p>
                     <p>Synonyms: ${answer.synonyms.join(', ')}</p>
                     <p>Antonyms: ${answer.antonyms.join(', ')}</p>
                     <p>Phonetic: ${answer.phonetic}</p>
-                    <p>Points Earned: ${answer.correct ? answer.points : 0}</p>
-                    <p>CEFR Level: ${answer.cefr}</p>
+                    <p>Points Earned: ${answer.points_awarded}</p>
+                    <p>CEFR Level: ${answer.CEFR_level}</p>
                 </div>
             `;
             comprehensiveAnalysis.appendChild(answerDiv);
@@ -228,14 +237,44 @@ document.addEventListener('DOMContentLoaded', () => {
         vocabularyLevelElement.innerHTML = `<h3>Your Vocabulary Level is: ${level}</h3>`;
     }
 
-    startButton.addEventListener('click', () => {
-        console.log('Start button clicked!');
-        if (quizRunning) {
-            console.log('Quiz is already running. Ignoring start button click.');
-            return; // Ignore if the quiz is already running
+    async function sendResultsToServer() {
+        const assessment = {
+            assessment_id: 'random-id', // Replace with actual assessment ID
+            date: new Date().toISOString(),
+            total_score: totalPoints,
+            questions: answers
+        };
+
+        const data = {
+            username,
+            email,
+            assessments: [assessment]
+        };
+
+        try {
+            const response = await fetch('https://sanghamitra-learning-backend.vercel.app/api/vocabscores', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                console.log('Results successfully sent to the server.');
+            } else {
+                console.error('Failed to send results to the server.');
+            }
+        } catch (error) {
+            console.error('Error sending results to the server:', error);
         }
-        startButton.disabled = true;
-        fetchQuestions();
+    }
+
+    document.getElementById('user-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        username = document.getElementById('username').value;
+        email = document.getElementById('email').value;
+        startQuiz();
     });
     
     nextButton.addEventListener('click', () => {
