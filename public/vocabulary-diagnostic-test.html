@@ -4,43 +4,184 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vocabulary Quiz Game</title>
-    <link rel="stylesheet" href="vocabulary-diagnostic-test.css">
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="assets/css/main.css" rel="stylesheet">
+
+    <!-- Custom CSS for Vocabulary Quiz -->
+    <link href="vocabulary-diagnostic-test.css" rel="stylesheet">
 </head>
 <body>
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+      <a href="index.html" class="logo d-flex align-items-center me-auto">
+        <img src="img/sbi.logo.png" alt="Logo" width="80" height="80"> 
+        <h1 class="">Sanghamitra Learning</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html" class="">Home</a></li>
+          <li><a href="about.html" class="">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" data-aos="fade">
+      <div class="heading">
+        <div class="container">
+          <div class="row d-flex justify-content-center text-center">
+            <div class="col-lg-8">
+              <h1>Vocabulary Quiz Game</h1>
+              <p class="mb-0">Welcome to the Diagnostic Vocabulary Assessment</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li class="current">Vocabulary Quiz</li>
+          </ol>
+        </div>
+      </nav>
+    </div><!-- End Page Title -->
+
     <div id="home" class="page active">
-        <h1>Welcome to the Diagnostic Vocabulary Assessment</h1>
-        <button id="start-button">Start Quiz</button>
+        <div class="container">
+            <div class="row d-flex justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h1>Welcome to the Diagnostic Vocabulary Assessment</h1>
+                    <button id="start-button" class="btn btn-primary mt-4">Start Quiz</button>
+                </div>
+            </div>
+        </div>
     </div>
+
     <div id="quiz" class="page hidden">
-        <div class="quiz-container">
-            <h2 id="question">Question</h2>
-            <div id="options">
-                <button class="option" data-option="a"></button>
-                <button class="option" data-option="b"></button>
-                <button class="option" data-option="c"></button>
-                <button class="option" data-option="d"></button>
+        <div class="container quiz-container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 id="question" class="mb-4">Question</h2>
+                    <div id="options" class="mb-4">
+                        <button class="option btn btn-outline-secondary" data-option="a"></button>
+                        <button class="option btn btn-outline-secondary" data-option="b"></button>
+                        <button class="option btn btn-outline-secondary" data-option="c"></button>
+                        <button class="option btn btn-outline-secondary" data-option="d"></button>
+                    </div>
+                    <div class="buttons d-flex justify-content-between">
+                        <button id="previous-button" class="btn btn-secondary hidden">Previous Question</button>
+                        <button id="next-button" class="btn btn-primary hidden">Next Question</button>
+                        <button id="end-button" class="btn btn-danger hidden">End Quiz</button>
+                    </div>
+                </div>
             </div>
-            <div class="buttons">
-                <button id="previous-button" class="hidden">Previous Question</button>
-                <button id="next-button" class="hidden">Next Question</button>
-                <button id="end-button" class="hidden">End Quiz</button>
+            <div id="feedback" class="hidden mt-4">
+                <p id="explanation">Explanation: </p>
+                <p id="synonyms">Synonyms: </p>
+                <p id="antonyms">Antonyms: </p>
+                <p id="phonetic">Phonetic: </p>
+                <p id="points">Points Earned: </p>
+                <p id="cefr">CEFR Level: </p>
             </div>
-        </div>
-        <div id="feedback" class="hidden">
-            <p id="explanation">Explanation: </p>
-            <p id="synonyms">Synonyms: </p>
-            <p id="antonyms">Antonyms: </p>
-            <p id="phonetic">Phonetic: </p>
-            <p id="points">Points Earned: </p>
-            <p id="cefr">CEFR Level: </p>
         </div>
     </div>
+
     <div id="result" class="page hidden">
-        <h2>Quiz Completed!</h2>
-        <p id="total-score">Total Points: </p>
-        <div id="comprehensive-analysis"></div>
-        <button id="restart-button">Restart Quiz</button>
+        <div class="container">
+            <div class="row d-flex justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h2>Quiz Completed!</h2>
+                    <p id="total-score">Total Points: </p>
+                    <div id="comprehensive-analysis"></div>
+                    <button id="restart-button" class="btn btn-primary mt-4">Restart Quiz</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <script src="vocabulary-diagnostic-test.js"></script>
+
+  </main>
+
+  <footer id="footer" class="footer position-relative">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span class="">Sanghamitra Learning</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>GacchiBowli</p>
+            <p>Hyderabad, TS 500032</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>+91 7020102729</span></p>
+            <p><strong>Email:</strong> <span>sanghamitra.learnworlds@gmail.com</span></p>
+          </div>
+          <div class="social-links d-flex mt-4">
+            <a href=""><i class="bi bi-twitter"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-12 footer-newsletter">
+          <!-- Optional content for the newsletter section -->
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1">Sanghamitra Learning</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">
+        Designed by <a href="index.html">Sanghamitra</a>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+  <!-- Custom JS for Vocabulary Quiz -->
+  <script src="vocabulary-diagnostic-test.js"></script>
+  
 </body>
 </html>
