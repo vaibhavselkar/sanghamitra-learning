@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         username = document.getElementById('username').value;
         email = document.getElementById('email').value;
-        startQuiz();
+        fetchQuestions();
     });
     
     nextButton.addEventListener('click', () => {
