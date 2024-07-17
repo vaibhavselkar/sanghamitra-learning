@@ -133,15 +133,11 @@ document.addEventListener('DOMContentLoaded', () => {
             user_response: selectedOption,
             selectedOptionIndex: [...optionButtons].indexOf(option), // Save the index of the selected option
             correct_option: question.correctOption,
-            explanation: question.explanation,
-            synonyms: question.synonyms,
-            antonyms: question.antonyms,
-            phonetic: question.phonetic,
+            is_correct: selectedAnswer,
             points_awarded: selectedAnswer ? question.points : 0,
             difficulty_level: question.difficulty_level,
             CEFR_level: question.CEFRLevel,
-            topic: question.topic,
-            correct: selectedAnswer
+            topic: question.topic
         };
     }
 
@@ -168,15 +164,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     user_response: "You did not answer this question.",
                     selectedOptionIndex: -1,
                     correct_option: questions[i].correctOption,
-                    explanation: questions[i].explanation,
-                    synonyms: questions[i].synonyms,
-                    antonyms: questions[i].antonyms,
-                    phonetic: questions[i].phonetic,
+                    is_correct: false,
                     points_awarded: 0,
                     difficulty_level: questions[i].difficulty_level,
                     CEFR_level: questions[i].CEFRLevel,
-                    topic: questions[i].topic,
-                    correct: false
+                    topic: questions[i].topic
                 };
             }
         }
@@ -198,10 +190,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const answer = answers[index];
             const answerDiv = document.createElement('div');
             answerDiv.classList.add('analysis-question');
-            answerDiv.classList.add(answer.correct ? 'correct-answer' : 'incorrect-answer');
+            answerDiv.classList.add(answer.is_correct ? 'correct-answer' : 'incorrect-answer');
             answerDiv.innerHTML = `
                 <div class="question-header">
-                    <span class="${answer.correct ? 'correct-icon' : answer.user_response === "You did not answer this question." ? 'skipped-icon' : 'incorrect-icon'}"></span>
+                    <span class="${answer.is_correct ? 'correct-icon' : answer.user_response === "You did not answer this question." ? 'skipped-icon' : 'incorrect-icon'}"></span>
                     <p>Question ${index + 1}: ${question.question}</p>
                 </div>
                 <p>Your answer: ${answer.user_response}</p>
