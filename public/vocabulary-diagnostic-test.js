@@ -136,7 +136,11 @@ document.addEventListener('DOMContentLoaded', () => {
             points_awarded: selectedAnswer ? question.points : 0,
             difficulty_level: question.difficulty_level,
             CEFR_level: question.CEFRLevel,
-            topic: question.topic
+            topic: question.topic,
+            explanation: question.explanation || '',
+            synonyms: question.synonyms || [],
+            antonyms: question.antonyms || [],
+            phonetic: question.phonetic || ''
         };
     }
 
@@ -166,7 +170,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     points_awarded: 0,
                     difficulty_level: questions[i].difficulty_level,
                     CEFR_level: questions[i].CEFRLevel,
-                    topic: questions[i].topic
+                    topic: questions[i].topic,
+                    explanation: questions[i].explanation || '',
+                    synonyms: questions[i].synonyms || [],
+                    antonyms: questions[i].antonyms || [],
+                    phonetic: questions[i].phonetic || ''
                 };
             }
         }
