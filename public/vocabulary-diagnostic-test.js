@@ -236,42 +236,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function sendResultsToServer() {
-        const assessment = {
-            assessment_id: 'random-id', // Replace with actual assessment ID
-            date: new Date().toISOString(),
-            total_score: totalPoints,
-            questions: answers
-        };
+    const assessment = {
+        assessment_id: 'random-id', // Replace with actual assessment ID
+        date: new Date().toISOString(),
+        total_score: totalPoints,
+        questions: answers
+    };
 
-        const data = {
-            username,
-            email,
-            assessments: [assessment]
-        };
+    const data = {
+        username,
+        email,
+        assessments: [assessment]
+    };
 
-        console.log("Sending data to server:", JSON.stringify(data, null, 2));
+    console.log("Sending data to server:", JSON.stringify(data, null, 2));
 
-        try {
-            const response = await fetch('https://sanghamitra-learning-backend.vercel.app/api/vocabscoreadd', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
+    try {
+        const response = await fetch('https://sanghamitra-learning-backend.vercel.app/api/vocabscoreadd', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
 
-            const responseData = await response.json();
-            console.log("Server response:", responseData);
+        const responseData = await response.json();
+        console.log("Server response:", responseData);
 
-            if (response.ok) {
-                console.log('Results successfully sent to the server.');
-            } else {
-                console.error('Failed to send results to the server.');
-            }
-        } catch (error) {
-            console.error('Error sending results to the server:', error);
+        if (response.ok) {
+            console.log('Results successfully sent to the server.');
+        } else {
+            console.error('Failed to send results to the server.');
         }
+    } catch (error) {
+        console.error('Error sending results to the server:', error);
     }
+}
+
 
     document.getElementById('user-form').addEventListener('submit', (event) => {
         event.preventDefault();
