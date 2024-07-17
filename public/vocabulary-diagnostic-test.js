@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Sending data to server:", data);
 
         try {
-            const response = await fetch('https://sanghamitra-learning-backend.vercel.app/api/vocabscores', {
+            const response = await fetch('https://sanghamitra-learning-backend.vercel.app/api/vocabscoreadd', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
