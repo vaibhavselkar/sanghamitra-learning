@@ -130,9 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
         answers[currentQuestionIndex] = {
             question_id: question.id,
             question_text: question.question,
-            user_response: selectedOption,
-            selectedOptionIndex: [...optionButtons].indexOf(option), // Save the index of the selected option
-            correct_option: question.correctOption,
+            user_response: question.options[selectedOption],
+            correct_option: question.options[question.correctOption],
             is_correct: selectedAnswer,
             points_awarded: selectedAnswer ? question.points : 0,
             difficulty_level: question.difficulty_level,
@@ -162,8 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     question_id: questions[i].id,
                     question_text: questions[i].question,
                     user_response: "You did not answer this question.",
-                    selectedOptionIndex: -1,
-                    correct_option: questions[i].correctOption,
+                    correct_option: questions[i].options[questions[i].correctOption],
                     is_correct: false,
                     points_awarded: 0,
                     difficulty_level: questions[i].difficulty_level,
@@ -243,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
             assessments: [assessment]
         };
 
-        console.log("Sending data to server:", data);
+        console.log("Sending data to server:", JSON.stringify(data, null, 2));
 
         try {
             const response = await fetch('https://sanghamitra-learning-backend.vercel.app/api/vocabscoreadd', {
